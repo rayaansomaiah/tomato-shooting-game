@@ -1,5 +1,8 @@
 # Shoot the Tomatoes
 
+## Instruction:
+Please use a mouse and not the trackpad for shooting targets.
+
 ## Description
 
 "Shoot the Tomatoes" is a simple shooting game developed using jQuery. The player uses the cursor to shoot moving targets on the screen. The game keeps track of the player's score and includes a timer for each game session. At the end of the game, the final score is displayed in a popup with an option to restart the game.
