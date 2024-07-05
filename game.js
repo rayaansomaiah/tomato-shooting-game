@@ -10,7 +10,7 @@ $(document).ready(function() {
     const $gameContainer = $('#game-container');
     const gameWidth = $gameContainer.width();
     const gameHeight = $gameContainer.height();
-    
+
     function createTarget() {
         const $newTarget = $('<div class="target"></div>');
         const newLeft = Math.random() * (gameWidth - 100);
@@ -73,6 +73,17 @@ $(document).ready(function() {
                 });
             }
         });
+
+        // Temporarily unbind events to prevent duplicate handling
+        $(document).off('click touchstart', shoot);
+
+        // Rebind events after a short delay
+        setTimeout(function() {
+            $(document).on('click', shoot);
+            $(document).on('touchstart', function(event) {
+                shoot(event.originalEvent.touches[0]);
+            });
+        }, 300); // 300ms is the delay so that both click and touchstart don't get executed together after either is recognised. 
     }
 
     function startTimer() {
@@ -108,7 +119,11 @@ $(document).ready(function() {
     $('#reset-btn').on('click', restartGame);
     $('#restart-btn-modal').on('click', restartGame);
 
-    $(document).on('click touchstart', shoot); // Bind both click and touchstart events
+    // Bind both click and touchstart events initially
+    $(document).on('click', shoot);
+    $(document).on('touchstart', function(event) {
+        shoot(event.originalEvent.touches[0]);
+    });
 
     restartGame(); // Start the game immediately when the page loads
 
