@@ -88,7 +88,7 @@ $(document).ready(function() {
 
     function restartGame() {
         score = 0;
-        $score.text('Score: ' + score);
+        $score.text('Scoore: ' + score);
         clearInterval(timerInterval);
         startTimer();
         $('.target').remove();  // Clear existing targets before creating new ones
@@ -98,7 +98,7 @@ $(document).ready(function() {
 
     $('#reset-btn').on('click', restartGame);
     $('#restart-btn-modal').on('click', restartGame);
-    $(document).on('click', shoot);
+    $(document).addEventListener('touchstart', shoot);
     restartGame(); // Start the game immediately when the page loads
 
     // Close the modal when the close button is clicked
