@@ -41,10 +41,10 @@ $(document).ready(function() {
 
     function shoot(event) {
         const currentTime = new Date().getTime();
-        if (currentTime - lastShotTime < 50) return; // Debounce time of 300ms
+        if (currentTime - lastShotTime < 50) return; //debounce time of 50ms
         lastShotTime = currentTime;
 
-        event.preventDefault(); // Prevent the default action (e.g., scrolling) for touch events
+        event.preventDefault(); // Prevents the default action like scrolling
 
         let bulletX, bulletY;
 
@@ -105,7 +105,7 @@ $(document).ready(function() {
         $score.text('Score: ' + score);
         clearInterval(timerInterval);
         startTimer();
-        $('.target').remove();  // Clear existing targets before creating new ones
+        $('.target').remove(); //this clears existing targets before creating new ones
         createTarget();
         $modal.hide();
     }
@@ -113,18 +113,18 @@ $(document).ready(function() {
     $('#reset-btn').on('click', restartGame);
     $('#restart-btn-modal').on('click', restartGame);
 
-    // Bind both click and touchstart events
+    // we put both click and touchstart events
     $(document).on('click touchstart', shoot);
 
     restartGame(); // Start the game immediately when the page loads
 
     // Close the modal when the close button is clicked
-    $('.close-btn').on('click', function() {
+    $('.close-btn').on('click',function(){
         $modal.hide();
     });
 
     // Close the modal when clicking outside of the modal content
-    $(window).on('click', function(event) {
+    $(window).on('click', function(event){
         if ($(event.target).is($modal)) {
             $modal.hide();
         }
