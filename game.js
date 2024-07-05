@@ -1,4 +1,3 @@
-
 $(document).ready(function() {
     let score = 0;
     let timeLeft = 20;
@@ -40,8 +39,17 @@ $(document).ready(function() {
     }
 
     function shoot(event) {
-        const bulletX = event.pageX - 5;
-        const bulletY = event.pageY - 5;
+        event.preventDefault(); // Prevent the default action (e.g., scrolling) for touch events
+
+        let bulletX, bulletY;
+
+        if (event.type === 'touchstart') {
+            bulletX = event.touches[0].pageX - 5;
+            bulletY = event.touches[0].pageY - 5;
+        } else {
+            bulletX = event.pageX - 5;
+            bulletY = event.pageY - 5;
+        }
 
         $bullet.css({
             left: bulletX,
@@ -99,7 +107,9 @@ $(document).ready(function() {
 
     $('#reset-btn').on('click', restartGame);
     $('#restart-btn-modal').on('click', restartGame);
-    $(document).on('click', shoot);
+
+    $(document).on('click touchstart', shoot); // Bind both click and touchstart events
+
     restartGame(); // Start the game immediately when the page loads
 
     // Close the modal when the close button is clicked
