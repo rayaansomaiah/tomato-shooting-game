@@ -2,6 +2,7 @@ $(document).ready(function() {
     let score = 0;
     let timeLeft = 20;
     let timerInterval;
+    let isShooting = false; // Flag to prevent multiple event handling
     const $bullet = $('#bullet');
     const $score = $('#score');
     const $timer = $('#timer');
@@ -39,7 +40,10 @@ $(document).ready(function() {
     }
 
     function shoot(event) {
-        event.preventDefault(); // Prevent the default action (e.g., scrolling) for touch events
+        if (isShooting) return; // Prevent multiple event handling
+        isShooting = true;
+
+        event.preventDefault(); //Prevents the default action like scrolling
 
         let bulletX, bulletY;
 
@@ -57,6 +61,7 @@ $(document).ready(function() {
             display: 'block'
         }).fadeOut(500, function() {
             $bullet.hide();
+            isShooting = false; // Reset flag after the bullet fades out
         });
 
         $('.target').each(function() {
@@ -64,7 +69,7 @@ $(document).ready(function() {
             const targetX = $target.offset().left;
             const targetY = $target.offset().top;
 
-            if (bulletX >= targetX && bulletX <= targetX + 100 && bulletY >= targetY && bulletY <= targetY + 100) {
+            if (bulletX >= targetX && bulletX <= targetX + 100 && bulletY >= targetY && bulletY <= targetY + 100){
                 score++;
                 $score.text('Score: ' + score);
                 $target.stop(true).fadeOut(100, function() {
@@ -73,17 +78,6 @@ $(document).ready(function() {
                 });
             }
         });
-
-        // Temporarily unbind events to prevent duplicate handling
-        $(document).off('click touchstart', shoot);
-
-        // Rebind events after a short delay
-        setTimeout(function() {
-            $(document).on('click', shoot);
-            $(document).on('touchstart', function(event) {
-                shoot(event.originalEvent.touches[0]);
-            });
-        }, 300); // 300ms is the delay so that both click and touchstart don't get executed together after either is recognised. 
     }
 
     function startTimer() {
@@ -119,20 +113,17 @@ $(document).ready(function() {
     $('#reset-btn').on('click', restartGame);
     $('#restart-btn-modal').on('click', restartGame);
 
-    // Bind both click and touchstart events initially
-    $(document).on('click', shoot);
-    $(document).on('touchstart', function(event) {
-        shoot(event.originalEvent.touches[0]);
-    });
+    //we have both click and touchstart events together
+    $(document).on('click touchstart', shoot);
 
-    restartGame(); // Start the game immediately when the page loads
+    restartGame(); //Start the game immediately when the page loads
 
     // Close the modal when the close button is clicked
     $('.close-btn').on('click', function() {
         $modal.hide();
     });
 
-    // Close the modal when clicking outside of the modal content
+    // Close the modal when clicking outside the modal content
     $(window).on('click', function(event) {
         if ($(event.target).is($modal)) {
             $modal.hide();
