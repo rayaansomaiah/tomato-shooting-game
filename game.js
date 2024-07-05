@@ -2,7 +2,6 @@ $(document).ready(function() {
     let score = 0;
     let timeLeft = 20;
     let timerInterval;
-    let isShooting = false; // Flag to prevent multiple event handling
     const $bullet = $('#bullet');
     const $score = $('#score');
     const $timer = $('#timer');
@@ -11,6 +10,7 @@ $(document).ready(function() {
     const $gameContainer = $('#game-container');
     const gameWidth = $gameContainer.width();
     const gameHeight = $gameContainer.height();
+    let lastShotTime = 0;
 
     function createTarget() {
         const $newTarget = $('<div class="target"></div>');
@@ -21,7 +21,7 @@ $(document).ready(function() {
             left: newLeft,
             top: newTop
         }).appendTo($gameContainer);
-        
+
         animateTarget($newTarget);
     }
 
@@ -40,10 +40,11 @@ $(document).ready(function() {
     }
 
     function shoot(event) {
-        if (isShooting) return; // Prevent multiple event handling
-        isShooting = true;
+        const currentTime = new Date().getTime();
+        if (currentTime - lastShotTime < 300) return; // Debounce time of 300ms
+        lastShotTime = currentTime;
 
-        event.preventDefault(); //Prevents the default action like scrolling
+        event.preventDefault(); // Prevent the default action (e.g., scrolling) for touch events
 
         let bulletX, bulletY;
 
@@ -61,7 +62,6 @@ $(document).ready(function() {
             display: 'block'
         }).fadeOut(500, function() {
             $bullet.hide();
-            isShooting = false; // Reset flag after the bullet fades out
         });
 
         $('.target').each(function() {
@@ -69,7 +69,7 @@ $(document).ready(function() {
             const targetX = $target.offset().left;
             const targetY = $target.offset().top;
 
-            if (bulletX >= targetX && bulletX <= targetX + 100 && bulletY >= targetY && bulletY <= targetY + 100){
+            if (bulletX >= targetX && bulletX <= targetX + 100 && bulletY >= targetY && bulletY <= targetY + 100) {
                 score++;
                 $score.text('Score: ' + score);
                 $target.stop(true).fadeOut(100, function() {
@@ -113,17 +113,17 @@ $(document).ready(function() {
     $('#reset-btn').on('click', restartGame);
     $('#restart-btn-modal').on('click', restartGame);
 
-    //we have both click and touchstart events together
+    // Bind both click and touchstart events
     $(document).on('click touchstart', shoot);
 
-    restartGame(); //Start the game immediately when the page loads
+    restartGame(); // Start the game immediately when the page loads
 
     // Close the modal when the close button is clicked
     $('.close-btn').on('click', function() {
         $modal.hide();
     });
 
-    // Close the modal when clicking outside the modal content
+    // Close the modal when clicking outside of the modal content
     $(window).on('click', function(event) {
         if ($(event.target).is($modal)) {
             $modal.hide();
