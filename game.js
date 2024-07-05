@@ -40,9 +40,8 @@ $(document).ready(function() {
     }
 
     function shoot(event) {
-        const bulletX = event.pageX - 5;
-        const bulletY = event.pageY - 5;
-
+        const bulletX = event.changedTouches[0].pageX - 5;
+        const bulletY = event.changedTouches[0].pageY - 5;
         $bullet.css({
             left: bulletX,
             top: bulletY,
