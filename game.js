@@ -41,7 +41,7 @@ $(document).ready(function() {
 
     function shoot(event) {
         const currentTime = new Date().getTime();
-        if (currentTime - lastShotTime < 300) return; // Debounce time of 300ms
+        if (currentTime - lastShotTime < 50) return; // Debounce time of 300ms
         lastShotTime = currentTime;
 
         event.preventDefault(); // Prevent the default action (e.g., scrolling) for touch events
