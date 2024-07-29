@@ -41,7 +41,7 @@ $(document).ready(function() {
 
     function shoot(event) {
         const currentTime = new Date().getTime();
-        if (currentTime - lastShotTime < 80) return; //debounce time of 50ms
+        if (currentTime - lastShotTime < 60) return; //debounce time of 60ms
         lastShotTime = currentTime;
 
         event.preventDefault(); // Prevents the default action like scrolling
@@ -73,7 +73,7 @@ $(document).ready(function() {
                 score++;
                 $score.text('Score: ' + score);
                 $('body').css('background-color',"#000000")
-                $target.stop(true).fadeOut(120, function() {               
+                $target.stop(true).fadeOut(70, function() {               
                     $target.remove();
                     createTarget();
                 });
