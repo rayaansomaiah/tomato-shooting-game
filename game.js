@@ -16,7 +16,7 @@ $(document).ready(function() {
         const $newTarget = $('<div class="target"></div>');
         const newLeft = Math.random() * (gameWidth - 100);
         const newTop = Math.random() * (gameHeight - 100);
-
+        $('body').css('background-color',"#10bce2");
         $newTarget.css({
             left: newLeft,
             top: newTop
@@ -72,7 +72,8 @@ $(document).ready(function() {
             if (bulletX >= targetX && bulletX <= targetX + 100 && bulletY >= targetY && bulletY <= targetY + 100) {
                 score++;
                 $score.text('Score: ' + score);
-                $target.stop(true).fadeOut(100, function() {
+                $('body').css('background-color',"#000000")
+                $target.stop(true).fadeOut(120, function() {               
                     $target.remove();
                     createTarget();
                 });
@@ -121,12 +122,5 @@ $(document).ready(function() {
     // Close the modal when the close button is clicked
     $('.close-btn').on('click',function(){
         $modal.hide();
-    });
-
-    // Close the modal when clicking outside of the modal content
-    $(window).on('click', function(event){
-        if ($(event.target).is($modal)) {
-            $modal.hide();
-        }
     });
 });
